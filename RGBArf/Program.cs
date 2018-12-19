@@ -28,7 +28,7 @@ namespace RGBArf
         [DllImport("kernel32.dll")]
         public static extern uint GetLastError();
 
-        static string Rainbow(string str, int phase = 0)
+        static string Rainbow(string str, float phase = 0F)
         {
             // adapted from https://krazydad.com/tutorials/makecolors.php
 
@@ -69,12 +69,13 @@ namespace RGBArf
             }
 
             string s;
-            int phase = 0;
+            float phaseShift = 0.5F;
+            float phase = phaseShift;
             while ((s = Console.ReadLine()) != null)
             {
                 Console.Write(Rainbow(s, phase));
                 Console.WriteLine("\u001b[0m"); // set color back to normal
-                phase++;
+                phase += phaseShift;
             }
             
         }

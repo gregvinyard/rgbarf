@@ -1,13 +1,13 @@
 ﻿using System;
+using System.IO;
+using System.IO.Pipes;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Runtime.InteropServices;
+using NDesk.Options;
 
 namespace RGBArf
 {
-    class Program
+    class RGBArf
     {
         // from tomorz "Enable VT100 for the current console window from .NET Core"
         // https://gist.github.com/tomzorz/6142d69852f831fb5393654c90a1f22e
@@ -49,9 +49,30 @@ namespace RGBArf
             return rainbowString;
         }
 
+        static void writeConsoleOutput()
+        {
+            string s;
+            float phaseShift = 0.5F;
+            float phase = phaseShift;
+            while ((s = Console.ReadLine()) != null)
+            {
+                Console.Write(Rainbow(s, phase));
+                Console.WriteLine("\u001b[0m"); // set color back to normal
+                phase += phaseShift;
+            }
+            return;
+        }
 
         static void Main(string[] args)
         {
+            bool show_help = false;
+
+            var p = new OptionSet()
+            {
+                { "h|help",  "show this message and exit",
+                  v => show_help = v != null },
+            };
+
             var iStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
             if (!GetConsoleMode(iStdOut, out uint outConsoleMode))
             {
@@ -68,16 +89,46 @@ namespace RGBArf
                 return;
             }
 
-            string s;
-            float phaseShift = 0.5F;
-            float phase = phaseShift;
-            while ((s = Console.ReadLine()) != null)
+            List<string> extra;
+            try
             {
-                Console.Write(Rainbow(s, phase));
-                Console.WriteLine("\u001b[0m"); // set color back to normal
-                phase += phaseShift;
+                extra = p.Parse(args);
             }
-            
+            catch (OptionException e)
+            {
+                Console.Write("rgbarf: ");
+                Console.WriteLine(e.Message);
+                Console.WriteLine("Try `rgbarf --help' for more information.");
+                return;
+            }
+
+            if (show_help)
+            {
+                ShowHelp(p);
+                return;
+            }
+
+            // bool inputRedirected = ConsoleEx.IsInputRedirected;
+
+            if (ConsoleEx.IsInputRedirected)
+            {
+                writeConsoleOutput();
+            }
+            else
+            {
+                ShowHelp(p);
+                return;
+            }
+        }
+
+        static void ShowHelp(OptionSet p)
+        {
+            Console.WriteLine("Make console applications more fun and colorful");
+            Console.WriteLine();
+            Console.WriteLine("Usage: [console application] | RGBARF");
+            Console.WriteLine();
+            Console.WriteLine("Options:");
+            p.WriteOptionDescriptions(Console.Out);
         }
     }
 

@@ -5,3 +5,5 @@ Example usage:
 ```
 c:\dir | rgbarf
 ```
+
+![RGBArf Example](./RGBArf/images/rgbarf.png?raw=true "RGBArf Example")

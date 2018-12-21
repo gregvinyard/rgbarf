@@ -43,7 +43,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ConsolEx.cs" />
+    <Compile Include="Colorize.cs" />
+    <Compile Include="ConsoleEx.cs" />
     <Compile Include="Options.cs" />
     <Compile Include="RGBArf.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

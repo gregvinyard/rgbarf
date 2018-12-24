@@ -28,11 +28,12 @@ namespace RGBArf
 
             var p = new OptionSet()
             {
-                { "h|help",  "Show this message and exit",
+                { "?|h|help",  "Show this message and exit",
                     v => show_help = v != null },
                 { "p=|pallete=", "Choose color pallete range\n" +
                                 "1 - Light Pastel\n" +
-                                "2 - Dark Pastel",
+                                "2 - Dark Pastel\n" +
+                                "3 - Light Gray",
                     (int v) => Colorize.SetColorPalleteRange(v, cparam)},
             };
 

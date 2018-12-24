@@ -1,5 +1,5 @@
 # rgbarf
-RBG Rainbow on the Windows command line.  Inspired by lolcat
+Pipe Windows console applications through RGBArf to get rainbow output.  Inspired by lolcat.
 
 Example usage:
 ```
